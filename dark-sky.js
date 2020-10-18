@@ -15,8 +15,23 @@ async function forecast() {
         })
         .get()
         .then(res => {
-            console.log(`wind speed: ${res.currently.windSpeed * (900 / 463)} knots`);
-            dogstatsd.gauge('forecast.windSpeed', res.currently.windSpeed * (900 / 463)); // m/s converted to knots
+            const forecast = res.currently;
+            const windSpeed = forecast.windSpeed * (900 / 463); // m/s converted to knots
+            const windGust = forecast.windGust * (900 / 463); // m/s converted to knots
+            const temperature = forecast.temperature;
+            const pressure = forecast.pressure;
+
+            console.log('--------------------------------------------');
+            console.log(new Date(forecast.time * 1000).toString());
+            console.log(`wind speed: ${windSpeed } knots`);
+            console.log(`wind gust: ${windGust} knots`);
+            console.log(`temperature: ${temperature} degrees celsius`);
+            console.log(`pressure: ${pressure} mbar`);
+
+            dogstatsd.gauge('sfBay.forecast.windSpeed', windSpeed);
+            dogstatsd.gauge('sfBay.forecast.windGust', windGust);
+            dogstatsd.gauge('sfBay.forecast.temperature', temperature);
+            dogstatsd.gauge('sfBay.forecast.pressure', pressure);
         });
 }
 
