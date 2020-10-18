@@ -4,6 +4,4 @@ async function main() {
     await darkSky.forecast();
 }
 
-module.exports = {
-    main: main
-};
+main();

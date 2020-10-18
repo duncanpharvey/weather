@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node -r dotenv/config ./bin/job.js",
+    "start": "node -r dotenv/config index.js",
     "test": "mocha -r dotenv/config"
   },
   "repository": {
@@ -26,6 +26,7 @@
   "dependencies": {
     "axios": "^0.20.0",
     "dark-sky": "^1.1.5",
+    "hot-shots": "^8.2.0",
     "slack-node": "^0.1.8"
   }
 }
