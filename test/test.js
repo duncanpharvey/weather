@@ -1,4 +1,3 @@
-const app = require('../index.js');
 const cron = require('node-cron');
 
 const { assert } = require('chai');
@@ -14,7 +13,7 @@ describe('App Start', () => {
     });
 
     it('should call all tasks on app run', async function () {
-        await app.main();
+        require('../index.js');
         sinon.assert.calledOnce(cron.schedule);
     });
 });

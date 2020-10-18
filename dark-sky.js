@@ -15,6 +15,7 @@ async function forecast() {
         })
         .get()
         .then(res => {
+            console.log(`wind speed: ${res.currently.windSpeed * (900 / 463)} knots`);
             dogstatsd.gauge('forecast.windSpeed', res.currently.windSpeed * (900 / 463)); // m/s converted to knots
         });
 }
