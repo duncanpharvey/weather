@@ -1,11 +1,12 @@
 const darkSky = require('./dark-sky.js');
+const cron = require('node-cron');
 
 async function main() {
-    await darkSky.forecast();
+    cron.schedule('*/3 * * * *', async () => {
+        await darkSky.forecast();
+    });
 }
-
-main();
 
 module.exports = {
     main: main
-};
+}

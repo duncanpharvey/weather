@@ -9,15 +9,13 @@ async function forecast() {
         .options({
             exclude: ['minutely', 'hourly', 'daily', 'flags'],
             language: 'en',
-            latitude: 37.819804,
+            latitude: 37.819804, // sf bay at center of golden gate bridge
             longitude: -122.477955,
             units: 'si'
         })
         .get()
         .then(res => {
-            console.log(res.currently.windSpeed * (900 / 463));
             dogstatsd.gauge('forecast.windSpeed', res.currently.windSpeed * (900 / 463)); // m/s converted to knots
-            console.log('complete');
         });
 }
 
