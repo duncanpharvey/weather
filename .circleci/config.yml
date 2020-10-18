@@ -19,10 +19,8 @@ jobs:
             - run: npm install
             - run: npm test
             - slack/notify:
-                channel: builds
                 event: fail
                 template: basic_fail_1
             - slack/notify:
-                channel: builds
                 event: pass
                 template: success_tagged_deploy_1
