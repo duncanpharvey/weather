@@ -1,6 +1,7 @@
 version: 2.1
 orbs:
   node: circleci/node@1.1.6
+  slack: circleci/slack@4.0.1
 
 workflows:
   deploy:
@@ -17,3 +18,4 @@ jobs:
           steps:
             - run: npm install
             - run: npm test
+            - slack-notify
