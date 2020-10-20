@@ -11,7 +11,7 @@ const logger = createLogger({
   exitOnError: false,
   format: format.json(),
   transports: [
-    new transports.File({ filename: '/var/log/weather.log' }),
+    new transports.File({ filename: 'weather.log' }),
   ],
 });
 
