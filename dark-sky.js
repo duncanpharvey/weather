@@ -46,7 +46,7 @@ async function forecast() {
             dogstatsd.gauge('sfBay.forecast.temperature', temperature);
             dogstatsd.gauge('sfBay.forecast.pressure', pressure);
         })
-        .catch(err => console.log('error', err));
+        .catch(err => logger.log('error', err));
 }
 
 module.exports = {
