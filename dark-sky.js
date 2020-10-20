@@ -4,15 +4,18 @@ const darkSky = new DarkSky(process.env.DARK_SKY);
 var StatsD = require('hot-shots');
 var dogstatsd = new StatsD();
 
-const { createLogger, format, transports } = require('winston');
+const winston = require('winston');
+const createLogger = winston.createLogger;
+const format = winston.format;
+const transports = winston.transports;
 
 const logger = createLogger({
-  level: 'info',
-  exitOnError: false,
-  format: format.json(),
-  transports: [
-    new transports.File({ filename: 'weather.log' }),
-  ],
+    levels: winston.config.syslog.levels,
+    exitOnError: false,
+    format: format.json(),
+    transports: [
+        new transports.File({ filename: 'weather.log' }),
+    ],
 });
 
 async function forecast() {
@@ -33,7 +36,7 @@ async function forecast() {
             const pressure = forecast.pressure;
 
             logger.log('info', `forecast time ${new Date(forecast.time * 1000).toString()}`);
-            logger.log('info', `wind speed: ${windSpeed } knots`);
+            logger.log('info', `wind speed: ${windSpeed} knots`);
             logger.log('info', `wind gust: ${windGust} knots`);
             logger.log('info', `temperature: ${temperature} degrees celsius`);
             logger.log('info', `pressure: ${pressure} mbar`);
@@ -42,7 +45,8 @@ async function forecast() {
             dogstatsd.gauge('sfBay.forecast.windGust', windGust);
             dogstatsd.gauge('sfBay.forecast.temperature', temperature);
             dogstatsd.gauge('sfBay.forecast.pressure', pressure);
-        });
+        })
+        .catch(err => console.log('error', err));
 }
 
 module.exports = {
