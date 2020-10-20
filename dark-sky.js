@@ -4,6 +4,17 @@ const darkSky = new DarkSky(process.env.DARK_SKY);
 var StatsD = require('hot-shots');
 var dogstatsd = new StatsD();
 
+const { createLogger, format, transports } = require('winston');
+
+const logger = createLogger({
+  level: 'info',
+  exitOnError: false,
+  format: format.json(),
+  transports: [
+    new transports.File({ filename: '/var/log/weather.log' }),
+  ],
+});
+
 async function forecast() {
     await darkSky
         .options({
@@ -21,12 +32,11 @@ async function forecast() {
             const temperature = forecast.temperature;
             const pressure = forecast.pressure;
 
-            console.log('--------------------------------------------');
-            console.log(new Date(forecast.time * 1000).toString());
-            console.log(`wind speed: ${windSpeed } knots`);
-            console.log(`wind gust: ${windGust} knots`);
-            console.log(`temperature: ${temperature} degrees celsius`);
-            console.log(`pressure: ${pressure} mbar`);
+            logger.log('info', `forecast time ${new Date(forecast.time * 1000).toString()}`);
+            logger.log('info', `wind speed: ${windSpeed } knots`);
+            logger.log('info', `wind gust: ${windGust} knots`);
+            logger.log('info', `temperature: ${temperature} degrees celsius`);
+            logger.log('info', `pressure: ${pressure} mbar`);
 
             dogstatsd.gauge('sfBay.forecast.windSpeed', windSpeed);
             dogstatsd.gauge('sfBay.forecast.windGust', windGust);
@@ -36,5 +46,6 @@ async function forecast() {
 }
 
 module.exports = {
-    forecast: forecast
+    forecast: forecast,
+    logger: logger
 };

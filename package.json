@@ -26,6 +26,7 @@
   "dependencies": {
     "dark-sky": "^1.1.5",
     "hot-shots": "^8.2.0",
-    "node-cron": "^2.0.3"
+    "node-cron": "^2.0.3",
+    "winston": "^3.3.3"
   }
 }
