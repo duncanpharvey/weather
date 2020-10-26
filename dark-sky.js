@@ -14,6 +14,7 @@ const logger = createLogger({
     exitOnError: false,
     format: format.json(),
     transports: [
+        new winston.transports.Console(),
         new transports.File({ filename: 'weather.log' }),
     ],
 });
